@@ -1,0 +1,129 @@
+
+CREATE TABLE public.tbl_UsersMaster
+(
+    userMaster_id SERIAL NOT NULL,
+    usertype character varying(500)  NOT NULL,
+    insert_Timestamp timestamp without time zone NOT NULL DEFAULT now(),
+    update_Timestamp timestamp without time zone DEFAULT now(),
+    CONSTRAINT usermaster_ukey PRIMARY KEY (userMaster_id),
+    is_Active boolean DEFAULT true
+)
+INSERT INTO public.tbl_UsersMaster(
+	usertype)
+	VALUES ('buyer');
+
+CREATE TABLE public.tbl_propertyType
+(
+    propertyType_id SERIAL NOT NULL,
+    property_Type character varying(500)  NOT NULL,
+    insert_Timestamp timestamp without time zone NOT NULL DEFAULT now(),
+    update_Timestamp timestamp without time zone DEFAULT now(),
+    CONSTRAINT propertyType_ukey PRIMARY KEY (propertyType_id),
+    is_Active boolean DEFAULT true
+)
+
+CREATE TABLE public.tbl_Users
+(
+    user_id SERIAL NOT NULL,
+    user_name character varying(500)  NOT NULL,
+    email_id character varying(500)  NOT NULL,
+    password character varying(500)  NOT NULL,
+    phone_no integer NOT NULL,
+    usertype_id character varying(500)  NOT NULL,
+    user_image_path character varying(500) NOT NULL,
+    user_image character varying(500) NOT NULL,
+    address character varying(500) NOT NULL,
+    insert_Timestamp timestamp without time zone NOT NULL DEFAULT now(),
+    update_Timestamp timestamp without time zone DEFAULT now(),
+    CONSTRAINT user_ukey PRIMARY KEY (user_id),
+    CONSTRAINT user_fkey FOREIGN KEY (usertype_id) REFERENCES tbl_UsersMaster (userMaster_id),
+    is_Active boolean DEFAULT true
+)
+
+INSERT INTO public.tbl_Users(
+	user_name, email_id, password, phone_no, usertype_id, user_image_path, user_image, address)
+	VALUES ('Cooper', 'cooper@gmail.com', 'Password#1', 1234567890, '1' , 'https://rental-api/userprofile/', '999343434.png', 'address');
+
+
+  
+CREATE TABLE public.tbl_PakringType
+(
+    pakringType_id SERIAL NOT NULL,
+    pakringType character varying(500)  NOT NULL,
+    insert_Timestamp timestamp without time zone NOT NULL DEFAULT now(),
+    update_Timestamp timestamp without time zone DEFAULT now(),
+    CONSTRAINT flatType_ukey PRIMARY KEY (pakringType_id),
+    is_Active boolean DEFAULT true
+)
+INSERT INTO public.tbl_PakringType(
+	pakringType)
+	VALUES ('bike');
+
+
+
+CREATE TABLE public.tbl_wishlist
+(
+    wishlist_id SERIAL NOT NULL,
+    user_id integer NOT NULL,
+    flat_id integer NOT NULL,
+    insert_Timestamp timestamp without time zone NOT NULL DEFAULT now(),
+    update_Timestamp timestamp without time zone DEFAULT now(),
+    CONSTRAINT wishlist_ukey PRIMARY KEY (wishlist_id),
+    is_Active boolean DEFAULT true
+)
+INSERT INTO public.tbl_wishlist(
+	user_id, flat_id)
+	VALUES (1,1);
+
+
+
+CREATE TABLE public.tbl_rating
+(
+    rating_id SERIAL NOT NULL,
+    user_id integer NOT NULL,
+    flat_id integer NOT NULL,
+    rating  integer NOT NULL,
+    insert_Timestamp timestamp without time zone NOT NULL DEFAULT now(),
+    update_Timestamp timestamp without time zone DEFAULT now(),
+    CONSTRAINT rating_ukey PRIMARY KEY (rating_id),
+    is_Active boolean DEFAULT true
+)
+INSERT INTO public.tbl_rating(
+	user_id, flat_id, rating)
+	VALUES (1,1,4);
+
+    
+CREATE TABLE public.tbl_Flat_Details
+(
+    flat_id SERIAL NOT NULL,
+    flat_tittle character varying(500)  NOT NULL,
+    flat_description TEXT NOT NULL,
+    propertyType_id integer NOT NULL,
+    address character varying(500)  NOT NULL,
+    area character varying(500)  NOT NULL,
+    rooms integer NOT NULL,
+    bathrooms integer NOT NULL,
+    balconies integer NOT NULL,
+    building_Area numeric NOT NULL,
+    carParking_Id integer NOT NULL,
+    facing character varying(500)  NOT NULL,
+    flat_price numeric NOT NULL,
+    flat_image_path character varying(500) NOT NULL,
+    flat_image character varying(500) NOT NULL,
+    latitude numeric NOT NULL,
+    longitude numeric NOT NULL,
+    rating_id integer NOT NULL,
+    pincode integer NOT NULL,
+    insert_Timestamp timestamp without time zone NOT NULL DEFAULT now(),
+    update_Timestamp timestamp without time zone DEFAULT now(),
+    CONSTRAINT flat_ukey PRIMARY KEY (flat_id),
+    CONSTRAINT pakringType_fkey FOREIGN KEY (carParking_Id) REFERENCES tbl_PakringType (pakringType_id),
+    CONSTRAINT propertyType_fkey FOREIGN KEY (propertyType_id) REFERENCES tbl_propertyType (propertyType_id),
+    CONSTRAINT propertyType_fkey FOREIGN KEY (propertyType_id) REFERENCES tbl_propertyType (propertyType_id),
+    is_Active boolean DEFAULT true
+)
+INSERT INTO public.tbl_Flat_Details(
+	flat_tittle, flat_description, propertyType_id, address, area, rooms, bathrooms, balconies,
+	building_Area, carParking_Id, facing, flat_image_path, flat_image, latitude,longitude)
+	VALUES ('New Apartment', 'New apartment ready to move', 1, 'address', 'anna nager', 2, 2, 1,
+		   '1020', 1, 'east', 28.34, 'https://rental-api/userprofile/', '999343434.png', 103403.343, 343943.393);
